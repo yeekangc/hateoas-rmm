@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import gcc.demos.rest.repository.PersonRepository;
+import gcc.demos.rest.repository.AccountRepository;
 import gcc.demos.rest.model.Address;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import javax.enterprise.context.RequestScoped;
 public class AddressResource {
 
     //@Inject
-    PersonRepository personRepo = new PersonRepository();
+    AccountRepository accountRepo = new AccountRepository();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -33,7 +33,7 @@ public class AddressResource {
         Address response=null;
         switch(request.getMethod()) {
             case "getAddress": {
-                response = personRepo.addressWithId(request.getAddress().getId());
+                response = accountRepo.addressWithId(request.getAddress().getId());
             }
         }
         return response;

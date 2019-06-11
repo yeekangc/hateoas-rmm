@@ -1,21 +1,23 @@
 package gcc.demos.rest.model;
 
 
-public class Person {
+public class Account {
 
 	private String id = "";
 	private String firstName = "";
 	private String lastName = "";
-	private String dob = null;
+	private double balance = 0.0;
+	private String currency = "USD";
 	private String addressId = "";
 	
-	public Person(String firstName, String lastName, String dob) {
+	public Account(String firstName, String lastName, double balance, String currency) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.dob = dob;
+		this.balance = balance;
+		this.currency = currency;
 	}
 	
-	public Person() {
+	public Account() {
 	}
 	
 	public void setId(String id) {
@@ -30,10 +32,14 @@ public class Person {
 		this.lastName = lastName;
 	}
 
-	public void setDob(String dob) {
-		this.dob = dob;
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
-	
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}	
+
 	public void setAddressId(String addressId) {
 		System.out.println("Setting address id: " + addressId);
 		this.addressId = addressId;
@@ -55,9 +61,13 @@ public class Person {
 		return lastName;
 	}
 	
-	public String getDob() {
-		return dob;
+	public double getBalance() {
+		return balance;
 	}
+	
+	public String getCurrency() {
+		return currency;
+	}	
 		
 
 }

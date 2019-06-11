@@ -12,15 +12,15 @@ import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 
 import gcc.demos.rest.model.Address;
-import gcc.demos.rest.model.Person;
+import gcc.demos.rest.model.Account;
 
 @ApplicationScoped
-public class PersonRepository {
+public class AccountRepository {
 	
-	private static final ConcurrentHashMap<String, Person> people = new ConcurrentHashMap<String, Person>();
+	private static final ConcurrentHashMap<String, Account> accounts = new ConcurrentHashMap<String, Account>();
 	private static final ConcurrentHashMap<String, Address> addresses = new ConcurrentHashMap<String, Address>();
 
-	private static long personId = 1;
+	private static long accountId = 1;
 	private static long addressId = 1;
 
 	// To drive initialization at startup
@@ -31,8 +31,8 @@ public class PersonRepository {
     public void destroy(@Observes @Destroyed(ApplicationScoped.class) Object init) {
 	}
 	
-	private static String newPersonId() {
-		return String.valueOf(personId++);
+	private static String newAccountId() {
+		return String.valueOf(accountId++);
 	}	
 
 	private static String newAddressId() {
@@ -40,66 +40,66 @@ public class PersonRepository {
 	}
 
 	static {
-		Person person = new Person("Bob", "Bobson", "31-12-1999");
-		person.setId(newPersonId());
+		Account account = new Account("Bob", "Bobson", 100.0, "USD");
+		account.setId(newAccountId());
 		Address address = new Address("14", "Wibble Road", "", "Hampshire", "14311", "England");
 		address.setId(newAddressId());
 		addresses.put(address.getId(), address);
-		person.setAddressId(address.getId());
-		people.put(person.getId(), person);
+		account.setAddressId(address.getId());
+		accounts.put(account.getId(), account);
 		
-		System.out.println("Person id: " + person.getId());
+		System.out.println("Account id: " + account.getId());
 		System.out.println("Address id: " + address.getId());
 
 		
-		person = new Person("Jane", "Janely", "30-12-1999");
-		person.setId(newPersonId());
+		account = new Account("Jane", "Janely", 0.0, "GBP");
+		account.setId(newAccountId());
 		address = new Address("The Hovel", "Wobble Road", "", "Old Hampshire", "43354", "Someland");
 		address.setId(newAddressId());		
 		addresses.put(address.getId(), address);
-		person.setAddressId(address.getId());
-		people.put(person.getId(), person);
+		account.setAddressId(address.getId());
+		accounts.put(account.getId(), account);
 
-		System.out.println("Person id: " + person.getId());
+		System.out.println("Account id: " + account.getId());
 		System.out.println("Address id: " + address.getId());
 	}
 	
-	public List<Person> allPeople() {
-		return new ArrayList<Person>(people.values());
+	public List<Account> allAccounts() {
+		return new ArrayList<Account>(accounts.values());
 	}
 	
-	public Person save(Person person) {
+	public Account save(Account person) {
 		if (person.getId() == "")
 			person.setId(UUID.randomUUID().toString());
-		people.put(person.getId(), person);
+		accounts.put(person.getId(), person);
 		return person;
 	}
 	
 	
-	public Person update(Person person) {
-		if (personWithId(person.getId()) == null)
+	public Account update(Account person) {
+		if (accountWithId(person.getId()) == null)
 			return null;
 		
-		people.put(person.getId(), person);
+		accounts.put(person.getId(), person);
 		return person;
 	}
 	
 
-	public Person personWithId(String id) {
-		return people.values().stream()
+	public Account accountWithId(String id) {
+		return accounts.values().stream()
 				.filter(person -> person.getId().equals(id))
 				.findFirst()
 				.orElse(null);
 	}
 	
-	public List<Person> personWithLastName(String lastName) {
-		return people.values().stream()
-				.filter(person -> person.getLastName().equals(lastName))
+	public List<Account> accountWithLastName(String lastName) {
+		return accounts.values().stream()
+				.filter(account -> account.getLastName().equals(lastName))
 				.collect(Collectors.toList());
 	}
 
-	public Person delete(String personId) {
-		return people.remove(personId);
+	public Account delete(String acountId) {
+		return accounts.remove(accountId);
 	}
 	
 	public List<Address> allAddresses() {

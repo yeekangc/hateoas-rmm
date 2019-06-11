@@ -15,9 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import gcc.demos.rest.repository.PersonRepository;
+import gcc.demos.rest.repository.AccountRepository;
 import gcc.demos.rest.model.Address;
-import gcc.demos.rest.model.Person;
+import gcc.demos.rest.model.Account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,25 +27,25 @@ import javax.inject.Inject;
 import javax.enterprise.context.RequestScoped;
 
 
-@Path("/person")
+@Path("/account")
 @RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class PersonResource {
+public class AccountResource {
 
     //@Inject
-    PersonRepository personRepo = new PersonRepository();
+    AccountRepository accountRepo = new AccountRepository();
 
  
     
     @POST
     @Path("/")
-    public Person personRequests(PersonRequest request) {
+    public Account personRequests(AccountRequest request) {
 
-        Person response=null;
+        Account response=null;
         switch(request.getMethod()) {
-            case "getPerson": {
-                response = personRepo.personWithId(request.getPerson().getId());
+            case "getAccount": {
+                response = accountRepo.accountWithId(request.getAccount().getId());
             }
         }
         return response;

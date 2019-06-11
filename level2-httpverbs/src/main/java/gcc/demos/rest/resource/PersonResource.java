@@ -15,9 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import gcc.demos.rest.repository.PersonRepository;
+import gcc.demos.rest.repository.AccountRepository;
 import gcc.demos.rest.model.Address;
-import gcc.demos.rest.model.Person;
+import gcc.demos.rest.model.Account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,42 +27,42 @@ import javax.inject.Inject;
 import javax.enterprise.context.RequestScoped;
 
 
-@Path("/person")
+@Path("/account")
 @RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class PersonResource {
 
     //@Inject
-    PersonRepository personRepo = new PersonRepository();
+    AccountRepository accountRepo = new AccountRepository();
 
     @GET
     @Path("/")
-    public List<Person> people() {
-        return personRepo.allPeople();
+    public List<Account> accounts() {
+        return accountRepo.allAccounts();
     }
 
     @GET
     @Path("/{id}")
-    public Person personWithId(@PathParam("id") String id) {
-    	Optional<Person> person = Optional.ofNullable(personRepo.personWithId(id));
-    	return person.orElseThrow(() -> new NotFoundException("Person does not exist."));
+    public Account accountWithId(@PathParam("id") String id) {
+    	Optional<Account> account = Optional.ofNullable(accountRepo.accountWithId(id));
+    	return account.orElseThrow(() -> new NotFoundException("Account does not exist."));
     }
     
     @GET
     @Path("/{id}/address")
-    public Address addressOfPersonWithId(@PathParam("id") String id) {
-    	Optional<Person> optPerson = Optional.ofNullable(personRepo.personWithId(id));
-    	Person person = optPerson.orElseThrow(() -> new NotFoundException("Person does not exist."));
+    public Address addressOfAccountWithId(@PathParam("id") String id) {
+    	Optional<Account> optAccount = Optional.ofNullable(accountRepo.accountWithId(id));
+    	Account account = optAccount.orElseThrow(() -> new NotFoundException("Account does not exist."));
     	
-    	Optional<Address> optAddress = Optional.ofNullable(personRepo.addressWithId(person.getAddressId()));
-    	return optAddress.orElseThrow(() -> new NotFoundException("Person does not have an address."));
+    	Optional<Address> optAddress = Optional.ofNullable(accountRepo.addressWithId(account.getAddressId()));
+    	return optAddress.orElseThrow(() -> new NotFoundException("Account does not have an address."));
     }    
     
     @GET
     @Path("/filter")
-    public List<Person> contains(@QueryParam("lastName") String lastName) {
-    	List<Person> matches = personRepo.personWithLastName(lastName);
+    public List<Account> contains(@QueryParam("lastName") String lastName) {
+    	List<Account> matches = accountRepo.accountWithLastName(lastName);
     	if (matches.isEmpty())
     		throw new NotFoundException("No people with matching lastName");
     	else
@@ -71,28 +71,28 @@ public class PersonResource {
     
     @POST
     @Path("/")
-    public Person createPerson(Person person) {
-    	if ("".equals(person.getId()))
-    		return personRepo.save(person);
+    public Account createAccount(Account account) {
+    	if ("".equals(account.getId()))
+    		return accountRepo.save(account);
     	else
-    		throw new BadRequestException("Person Id provided on create request.");
+    		throw new BadRequestException("Account Id provided on create request.");
     }
     
     @PUT
-    @Path("/{personId}")
-    public Person updatePerson(@PathParam("personId") String personId, Person person) {
-    	person.setId(personId);
-    	Optional<Person> optPerson = Optional.ofNullable(personRepo.update(person));
-    	return optPerson.orElseThrow(() -> new NotFoundException("Person does not exist."));
+    @Path("/{accountId}")
+    public Account updateAccount(@PathParam("accountId") String accountId, Account account) {
+    	account.setId(accountId);
+    	Optional<Account> optAccount = Optional.ofNullable(accountRepo.update(account));
+    	return optAccount.orElseThrow(() -> new NotFoundException("Account does not exist."));
     }    
 
     
     @DELETE
-    @Path("/{personId}")
-    public void deletePerson(@PathParam("personId") String personId) {
-    	Person person = personRepo.delete(personId);
-    	if (person == null)
-    		throw new NotFoundException("Person does not exist.");
+    @Path("/{accountId}")
+    public void deleteAccount(@PathParam("accountId") String accountId) {
+    	Account account = accountRepo.delete(accountId);
+    	if (account == null)
+    		throw new NotFoundException("Account does not exist.");
     }
     
 

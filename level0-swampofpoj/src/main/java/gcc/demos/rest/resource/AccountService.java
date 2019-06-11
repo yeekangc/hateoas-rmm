@@ -16,9 +16,9 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import gcc.demos.rest.repository.PersonRepository;
+import gcc.demos.rest.repository.AccountRepository;
 import gcc.demos.rest.model.Address;
-import gcc.demos.rest.model.Person;
+import gcc.demos.rest.model.Account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +35,10 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class PersonService {
+public class AccountService {
 
     //@Inject
-    PersonRepository personRepo = new PersonRepository();
+    AccountRepository accountRepo = new AccountRepository();
     
     @POST
     @Path("/")
@@ -49,18 +49,19 @@ public class PersonService {
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 
         switch(method) {
-            case "getPerson": {
+            case "getAccount": {
                 System.out.println("Getting a customer");
                 String id = request.getString("id");
                 System.out.println("Id= " + id);
-                Person person = personRepo.personWithId(id);
-                jsonBuilder.add("id", person.getId());
-                jsonBuilder.add("firstName", person.getFirstName());
-                jsonBuilder.add("lastName", person.getLastName());
-                jsonBuilder.add("dob", person.getDob());
-                jsonBuilder.add("addressId", person.getAddressId());
+                Account account = accountRepo.accountWithId(id);
+                jsonBuilder.add("id", account.getId());
+                jsonBuilder.add("firstName", account.getFirstName());
+                jsonBuilder.add("lastName", account.getLastName());
+                jsonBuilder.add("balance", account.getBalance());
+                jsonBuilder.add("currency", account.getCurrency());
+                jsonBuilder.add("addressId", account.getAddressId());
                 JsonObject json = jsonBuilder.build();
-                System.out.println(person.getFirstName());
+                System.out.println(account.getFirstName());
                 System.out.println(json.toString());
 
                 return Response.status(Response.Status.OK).entity(json).type(MediaType.APPLICATION_JSON).build();
@@ -70,7 +71,7 @@ public class PersonService {
                 System.out.println("Getting an address");
                 String id = request.getString("id");
                 System.out.println("Id= " + id);
-                Address address = personRepo.addressWithId(id);
+                Address address = accountRepo.addressWithId(id);
                 jsonBuilder.add("id", address.getId());
                 jsonBuilder.add("nameOrNumber", address.getNameOrNumber());
                 jsonBuilder.add("line2", address.getLine2());

@@ -7,7 +7,7 @@ import javax.json.bind.annotation.JsonbProperty;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 
-public class PersonWithLinks extends Person {
+public class AddressWithLinks extends Address {
 
     private List<Link> links =  new ArrayList<Link>();
 
@@ -15,8 +15,8 @@ public class PersonWithLinks extends Person {
         links.add(link);
     }
 
-    public PersonWithLinks(Person person) {
-        super(person);
+    public AddressWithLinks(Address address) {
+        super(address);
     }
 
     @JsonbProperty("_links")

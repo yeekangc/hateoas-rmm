@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import gcc.demos.rest.repository.PersonRepository;
+import gcc.demos.rest.repository.AccountRepository;
 import gcc.demos.rest.model.Address;
 
 import java.util.List;
@@ -23,27 +23,27 @@ import javax.enterprise.context.RequestScoped;
 public class AddressResource {
 
     //@Inject
-    PersonRepository personRepo = new PersonRepository();
+    AccountRepository accountRepo = new AccountRepository();
 
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Address> addresses() {
-        return personRepo.allAddresses();
+        return accountRepo.allAddresses();
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Address addressWithId(@PathParam("id") String id) {
-        return personRepo.addressWithId(id);
+        return accountRepo.addressWithId(id);
     }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Address createAddress(Address address) {
-    	return personRepo.save(address);
+    	return accountRepo.save(address);
     }
 
 }

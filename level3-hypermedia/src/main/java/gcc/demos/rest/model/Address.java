@@ -19,6 +19,16 @@ public class Address {
 		this.country = country;
 	}
 	
+	public Address(Address address) {
+		this.nameOrNumber = address.getNameOrNumber();
+		this.street = address.getStreet();
+		this.line2 = address.getLine2();
+		this.state = address.getState();
+		this.zip = address.getZip();
+		this.country = address.getCountry();
+		this.id = address.getId();
+	}
+
 	public Address() {
 		
 	}
