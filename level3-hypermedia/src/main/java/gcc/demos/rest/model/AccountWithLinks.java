@@ -1,5 +1,7 @@
 package gcc.demos.rest.model;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 

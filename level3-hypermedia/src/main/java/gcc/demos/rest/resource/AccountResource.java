@@ -132,8 +132,8 @@ public class AccountResource {
     @Path("/{accountId}")
     public AccountWithLinks updateAccount(@PathParam("accountId") String accountId, Account account) {
     	account.setId(accountId);
-    	Optional<Account> optAccount = Optional.ofNullable(accountRepo.update(account));
-    	AccountWithLinks awl = new AccountWithLinks(optAccount.orElseThrow(() -> new NotFoundException("Account does not exist.")));
+        Optional<Account> optAccount = Optional.ofNullable(accountRepo.update(account));
+        AccountWithLinks awl = new AccountWithLinks(optAccount.orElseThrow(() -> new NotFoundException("Account does not exist.")));
          
         addAllLinks(awl);
         
