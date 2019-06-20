@@ -4,6 +4,7 @@ import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotAllowedException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -31,7 +32,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class PersonResource {
+public class AccountResource {
 
     //@Inject
     AccountRepository accountRepo = new AccountRepository();
@@ -59,6 +60,29 @@ public class PersonResource {
     	return optAddress.orElseThrow(() -> new NotFoundException("Account does not have an address."));
     }    
     
+    @PUT
+    @Path("/{id}/deposit/{amount}")
+    public Account deposit(@PathParam("id") String id, @PathParam("amount") double amount) {
+    	Optional<Account> optAccount = Optional.ofNullable(accountRepo.accountWithId(id));
+    	Account account = optAccount.orElseThrow(() -> new NotFoundException("Account does not exist."));
+        
+        account.setBalance(account.getBalance() + amount);
+    	return updateAccount(id, account);
+    } 
+
+    @PUT
+    @Path("/{id}/withdraw/{amount}")
+    public Account withdraw(@PathParam("id") String id, @PathParam("amount") double amount) {
+    	Optional<Account> optAccount = Optional.ofNullable(accountRepo.accountWithId(id));
+    	Account account = optAccount.orElseThrow(() -> new NotFoundException("Account does not exist."));
+        
+        if (account.getBalance() < amount)
+            throw new NotAllowedException("Insufficient funds.");
+
+        account.setBalance(account.getBalance() - amount);
+    	return updateAccount(id, account);
+    }    
+
     @GET
     @Path("/filter")
     public List<Account> contains(@QueryParam("lastName") String lastName) {

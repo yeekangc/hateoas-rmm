@@ -36,16 +36,28 @@ public class AccountResource {
     //@Inject
     AccountRepository accountRepo = new AccountRepository();
 
- 
-    
+     
     @POST
     @Path("/")
-    public Account personRequests(AccountRequest request) {
+    public List<Account> accountsRequests(AccountRequest request) {
+
+        List<Account> response=null;
+        switch(request.getMethod()) {
+            case "getAccounts": {
+                response = accountRepo.allAccounts();
+            }
+        }
+        return response;
+    }
+    
+    @POST
+    @Path("/{id}")
+    public Account accountRequests(@PathParam("id") String id, AccountRequest request) {
 
         Account response=null;
         switch(request.getMethod()) {
             case "getAccount": {
-                response = accountRepo.accountWithId(request.getAccount().getId());
+                response = accountRepo.accountWithId(id);
             }
         }
         return response;
